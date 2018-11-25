@@ -1,0 +1,81 @@
+" These lines setup the environment to show graphics and colors correctly.
+set nocompatible
+" get pathogen to manage plugins
+execute pathogen#infect()
+
+set t_Co=256
+set background=dark
+colorscheme CandyPaper
+
+syntax on
+set hlsearch
+set backspace=indent,eol,start  " backspace over everythin
+set showmatch
+set autoindent
+set backup
+set backupdir=/tmp
+set history=50
+set ruler
+set showcmd
+set incsearch
+set vb t_vb=   "turns off error beep
+set expandtab
+set tabstop=4
+set number
+set cursorline
+let python_highlight_all = 1
+
+
+if has("autocmd")
+    filetype plugin indent on
+    set shiftwidth=4
+    set shiftround
+
+    autocmd FileType text setlocal textwidth=100
+
+    " remember cursor position
+    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+
+ 
+ 
+let g:minBufExplForceSyntaxEnable = 1
+e
+if ! has('gui_running')
+   set ttimeoutlen=10
+   augroup FastEscape
+      autocmd!
+      au InsertEnter * set timeoutlen=0
+      au InsertLeave * set timeoutlen=1000
+   augroup END
+endif
+
+" ale set up
+let g:ale_linters = {'python': ['flake8'],}
+let g:ale_sign_column_always = 1
+
+" tab key mapping
+map <C-t><up> :tabr<cr>
+map <C-t><down> :tabl<cr>
+map <C-t><left> :tabp<cr>
+map <C-t><right> :tabn<cr>
+
+"slimux
+nnoremap <C-c><C-v> :SlimuxREPLConfigure<CR>
+nnoremap <C-c><C-c> :SlimuxREPLSendLine<CR>
+vnoremap <C-c><C-c> :SlimuxREPLSendLine<CR>
+map <C-c>a :SlimuxShellLast<CR>
+map <C-c>b :SlimuxREPLSendBuffer<CR>
+map <C-c>k :SlimuxSendKeysLast<CR>
+
+
+" set up powerline
+set rtp+=/home/brian/anaconda3/lib/python3.6/site-packages/powerline/bindings/vim
+
+set shortmess=a
+set cmdheight=2
+set laststatus=2 " Always display the statusline in all windows
+set showtabline=2 " Always display the tabline, even if there is only one tab
+set guifont=Inconsolata\ for\ Powerline:h14
+set noshowmode
