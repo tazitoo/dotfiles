@@ -1,0 +1,147 @@
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+# don't put duplicate lines in the history. See bash(1) for more options
+# don't overwrite GNU Midnight Commander's setting of `ignorespace'.
+export HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
+# ... or force ignoredups and ignorespace
+export HISTCONTROL=ignoreboth
+
+# get forward file completion like tcsh does it...
+bind TAB:menu-complete  # if you do this you can't type 'b'...<sigh>
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+# Comment in the above and uncomment this below for a color prompt
+PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\h\[\033[01;34m\]:\[\033[01;34m\]\w\[\033[00m\] > '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+
+export PATH=.:$PATH
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+#if [ -f ~/.bash_aliases ]; then
+#    . ~/.bash_aliases
+#fi
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    #eval "`dircolors -b`"
+    #eval "`dircolors .dircolors`"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    #alias fgrep='fgrep --color=auto'
+    #alias egrep='egrep --color=auto'
+fi
+
+# some more ls aliases
+#alias ll='ls -l'
+#alias la='ls -A'
+#alias l='ls -CF'
+alias ..="cd .."
+alias df="df -h"
+alias vi='/usr/bin/vim'
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
+
+export CVSROOT=/home/brian/source/CVS_finance
+#export CVSROOT=/home/brian/Storage/source/CVS_finance
+#export CVSROOT=/blackie/important_files/CVS_finance/
+export TIME="\t%E,\t%k" # If using bash or ksh
+export XBMC_HOME=/usr/share/xbmc
+export EDITOR=/usr/bin/vim
+
+# setup for openfoam use
+#. /opt/openfoam222/etc/bashrc
+
+export GOARCH=arm
+export GOPATH=/home/brian/go
+#export GOROOT=$HOME/go_1.7/go
+#export PATH=$GOROOT/bin:$PATH
+
+
+# need java for spark
+#https://www.santoshsrinivas.com/installing-apache-spark-on-ubuntu-16-04/
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle  
+export SBT_HOME=/usr/share/sbt-launcher-packaging/bin/sbt-launch.jar  
+export SPARK_HOME=/usr/lib/spark  
+export PATH=$PATH:$JAVA_HOME/bin  
+export PATH=$PATH:$SBT_HOME/bin:$SPARK_HOME/bin:$SPARK_HOME/sbin  
+
+# added by Anaconda3 4.2.0 installer
+export PATH="/home/brian/anaconda3/bin:$PATH"
+export PYTHONPATH=/home/brian/Dropbox/finance/library
+
+# tensorflow configuration
+export PATH=$PATH:/usr/local/cuda-9.0/bin
+export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64:${LD_LIBRARY_PATH}
+#See more at: http://docs.nvidia.com/cuda/cuda-installation-guide-linux/#axzz4VZnqTJ2A
+export CUDA_HOME=/usr/local/cuda-9.0
+
+source /home/brian/anaconda3/lib/python3.6/site-packages/powerline/bindings/bash/powerline.sh
