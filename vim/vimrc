@@ -2,7 +2,13 @@
 set nocompatible
 " get pathogen to manage plugins
 execute pathogen#infect()
+"
 
+" this next line stop annoying 'Hit ENTER to continue...'
+set shortmess+=F
+set cmdheight=2  " kept just in case...
+
+" set up colorscheme
 set t_Co=256
 set background=dark
 colorscheme CandyPaper
@@ -19,9 +25,8 @@ set ruler
 set showcmd
 set incsearch
 set vb t_vb=   "turns off error beep
-set expandtab
 set tabstop=4
-set number
+set number  " shown in powerline
 set cursorline
 let python_highlight_all = 1
 
@@ -37,6 +42,7 @@ if has("autocmd")
     au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
 
+set expandtab
 
  
  
@@ -52,8 +58,27 @@ if ! has('gui_running')
 endif
 
 " ale set up
-let g:ale_linters = {'python': ['flake8'],}
+" Enable completion where available.
+" This setting must be set before ALE is loaded.
+"
+" You should not turn this setting on if you wish to use ALE as a completion
+" source for other completion plugins, like Deoplete.
+let g:ale_completion_enabled = 1
 let g:ale_sign_column_always = 1
+
+let g:ale_linters = {'python': ['pycodestyle', 'pylint --disable=C103']}
+let b:ale_fixers= {'python': ['black', 'autopep8', 'isort']}
+let g:ale_fixers= {'python': ['black', 'autopep8', 'isort']}
+command! -range=% Isort :<line1>,<line2>! isort -
+let g:ale_fix_on_save = 1
+
+let g:ale_sign_column_always = 1
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '--'
+
+" Write this in your vimrc file
+"let g:ale_set_loclist = 0
+"let g:ale_set_quickfix = 1
 
 " tab key mapping
 map <C-t><up> :tabr<cr>
@@ -70,11 +95,23 @@ map <C-c>b :SlimuxREPLSendBuffer<CR>
 map <C-c>k :SlimuxSendKeysLast<CR>
 
 
-" set up powerline
-set rtp+=/home/brian/anaconda3/lib/python3.6/site-packages/powerline/bindings/vim
+" kite set up
+" don't like it since it needs a 'copilot' window open
+"set statusline=%<%f\ %h%m%r%{kite#statusline()}%=%-14.(%l,%c%V%)\ %P
+"set laststatus=2  " always display the status line
+"let g:kite_tab_complete=1
+"set completeopt+=menuone   " show the popup menu even when there is only 1 match
+"set completeopt+=noinsert  " don't insert any text until user chooses a match
+"set completeopt-=longest   " don't insert the longest common text
+"set completeopt+=preview
 
-set shortmess=a
-set cmdheight=2
+autocmd CompleteDone * if !pumvisible() | pclose | endif
+
+
+" set up powerline
+set rtp+=/home/brian/anaconda3/lib/python3.7/site-packages/powerline/bindings/vim
+"set rtp+=/usr/lib/python3/dist-packages/powerline/bindings/vim
+
 set laststatus=2 " Always display the statusline in all windows
 set showtabline=2 " Always display the tabline, even if there is only one tab
 set guifont=Inconsolata\ for\ Powerline:h14
