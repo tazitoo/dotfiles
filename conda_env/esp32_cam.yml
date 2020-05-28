@@ -1,0 +1,32 @@
+name: esp32_cam
+channels:
+  - defaults
+dependencies:
+  - _libgcc_mutex=0.1
+  - ca-certificates=2019.5.15
+  - certifi=2019.6.16
+  - libedit=3.1.20181209
+  - libffi=3.2.1
+  - libgcc-ng=9.1.0
+  - libstdcxx-ng=9.1.0
+  - ncurses=6.1
+  - openssl=1.1.1c
+  - pip=19.1.1
+  - python=3.7.3
+  - readline=7.0
+  - setuptools=41.0.1
+  - sqlite=3.29.0
+  - tk=8.6.8
+  - wheel=0.33.4
+  - xz=5.2.4
+  - zlib=1.2.11
+  - pip:
+    - adafruit-ampy==1.0.7
+    - click==7.0
+    - ecdsa==0.13.2
+    - esptool==2.7
+    - pyaes==1.6.1
+    - pyserial==3.4
+    - python-dotenv==0.10.3
+prefix: /home/brian/anaconda3/envs/esp32_cam
+
